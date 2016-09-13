@@ -180,11 +180,11 @@ echo $header;
 				    <select name="zone_id" id="input-payment-zone" class="form-control">
 				    </select>
 				  </div>
-				  <div class="form-group required col-md-6">
+				  <div class="form-group  hidden col-md-6">
 				    <label class="control-label" for="input-payment-city"><?php echo $entry_city; ?></label>
 				    <input type="text" name="city" value="<?php if (isset($city)) echo $city;?>" placeholder="<?php echo str_replace(':','',$entry_city); ?>" id="input-payment-city" class="form-control" />
 				  </div>
-				  <div class="form-group required col-md-6">
+				  <div class="form-group hidden col-md-6">
 				    <label class="control-label" for="input-payment-postcode"><?php echo $entry_postcode; ?></label>
 				    <input type="text" name="postcode" value="<?php if (isset($postcode)) echo $postcode;?>" placeholder="<?php echo str_replace(':','',$entry_postcode); ?>" id="input-payment-postcode" class="form-control" />
 				  </div>
@@ -278,7 +278,7 @@ echo $header;
 		      </div>
 		    </div>			      
 		    <div class="col-md-6">
-			<div class="shiptobilling clearfix">
+			<div class="shiptobilling hidden clearfix">
 				    <h3><?php echo $text_checkout_shipping_address; ?></h3>
 					<?php if (!isset($customer_id)) {?>
 				    <label class="checkbox">
@@ -483,7 +483,7 @@ echo $header;
 				<?php } ?>
 			      </div>
 			</div>	
-			    <div class="shipping-method">
+			    <div class="shipping-method hidden">
 				<?php if ($error_warning) { ?>
 				<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?></div>
 				<?php } ?>
@@ -557,7 +557,9 @@ echo $header;
 					      </tfoot>
 					    </table>
 									
-					<div class="payment-method">						    
+                
+					<div class="payment-method hidden"> 
+                       
 					<?php if ($error_warning) { ?>
 					<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?></div>
 					<?php } ?>
@@ -583,7 +585,7 @@ echo $header;
 					  <textarea name="comment" rows="3" class="form-control"><?php echo $comment; ?></textarea>
 					</p>
 					<?php if ($text_agree) { ?>
-					<div class="buttons clearfix">
+					<div class="buttons clearfix hidden">
 					  <div class="pull-right"><?php echo $text_agree; ?>
 					    <?php if ($agree) { ?>
 					    <input type="checkbox" name="agree" value="1" checked="checked" />
@@ -796,7 +798,7 @@ $('select[name=\'country_id\'], select[name=\'zone_id\'], select[name=\'shipping
 
 	jQuery(".payment-method").load('index.php?route=checkout/checkout/payment_method', $('.checkout_form input[type=\'text\'], .checkout_form input[type=\'date\'], .checkout_form input[type=\'datetime-local\'], .checkout_form input[type=\'time\'], .checkout_form input[type=\'password\'], .checkout_form input[type=\'hidden\'], .checkout_form input[type=\'checkbox\']:checked, .checkout_form input[type=\'radio\']:checked,input[name=\'shipping_method\']:first, .checkout_form textarea, .checkout_form select'), function() 
 	{
-		jQuery("[name=\'payment_method\']").removeAttr("checked").prop('checked', false);
+		//jQuery("[name=\'payment_method\']").removeAttr("checked").prop('checked', false);
 	});
 });    
 
