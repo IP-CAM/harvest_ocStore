@@ -5,7 +5,7 @@
     <a class="list-group-item"><?php echo $filter_group['name']; ?></a>
     <div class="list-group-item">
       <div id="filter-group<?php echo $filter_group['filter_group_id']; ?>">
-            <select class="form-control" id="" name="">
+            <select class="form-control" id="select_filter-group<?php echo $filter_group['filter_group_id']; ?>" name="">
               <option>------------</option>
         <?php foreach ($filter_group['filter'] as $filter) { ?>
               <?php if (in_array($filter['filter_id'], $filter_category)) { ?>
@@ -26,6 +26,10 @@
   </div>
 </div>
 <script type="text/javascript"><!--
+//$('#select_filter-group2').on('change', function() {
+//  alert( "Группа поменялась!" );
+//});
+
 $('#button-filter').on('click', function() {
 	filter = [];
 

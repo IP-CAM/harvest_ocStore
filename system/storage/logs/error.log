@@ -92,3 +92,5 @@
 2016-09-13 21:41:18 - PHP Notice:  Undefined variable: agree in D:\OpenServer\OpenServer\domains\harvest1\catalog\view\theme\default\template\checkout\checkout.tpl on line 590
 2016-09-13 21:43:00 - PHP Notice:  Undefined variable: agree in D:\OpenServer\OpenServer\domains\harvest1\catalog\view\theme\default\template\checkout\checkout.tpl on line 590
 2016-09-14 10:35:51 - PHP Notice:  Undefined variable: agree in /home/karma/server/mysite.zz/catalog/view/theme/default/template/checkout/checkout.tpl on line 590
+2016-09-14 15:22:30 - Export/Import: Worksheet 'ProductAttributes' uses product_id '1' in the wrong order. Ascending order expected!
+2016-09-14 15:22:30 - Export/Import: Worksheet 'ProductFilters' uses product_id '1' in the wrong order. Ascending order expected!
