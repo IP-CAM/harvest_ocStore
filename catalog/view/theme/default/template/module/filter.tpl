@@ -6,7 +6,7 @@
     <div class="list-group-item">
       <div id="filter-group<?php echo $filter_group['filter_group_id']; ?>">
             <select class="form-control" id="select_filter-group<?php echo $filter_group['filter_group_id']; ?>" name="">
-              <option>------------</option>
+              <option value="0">------------</option>
         <?php foreach ($filter_group['filter'] as $filter) { ?>
               <?php if (in_array($filter['filter_id'], $filter_category)) { ?>
               <option name="filter[]" value="<?php echo $filter['filter_id']; ?>" selected />
@@ -26,9 +26,24 @@
   </div>
 </div>
 <script type="text/javascript"><!--
-//$('#select_filter-group2').on('change', function() {
-//  alert( "Группа поменялась!" );
-//});
+
+$('#select_filter-group2').on('change', function() {
+
+  if ($('#select_filter-group2').val() == 0) {
+    $("#select_filter-group1").find("option:contains('R')").removeClass("hidden");
+    $("#select_filter-group1").find("option:contains('-')").removeClass("hidden");
+  }
+    
+  if ($('#select_filter-group2').val() == 55) {
+    $("#select_filter-group1").find("option:contains('R')").addClass("hidden");
+    $("#select_filter-group1").find("option:contains('-')").removeClass("hidden");
+  }
+  if ($('#select_filter-group2').val() == 56) {
+    $("#select_filter-group1").find("option:contains('-')").addClass("hidden");
+    $("#select_filter-group1").find("option:contains('R')").removeClass("hidden");
+  }
+ 
+});
 
 $('#button-filter').on('click', function() {
 	filter = [];
