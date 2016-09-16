@@ -10,15 +10,15 @@ class ControllerApiLogin extends Controller {
 		// Check if IP is allowed
 		$ip_data = array();
 
-		$results = $this->model_account_api->getApiIps($this->config->get('config_api_id'));
+//		$results = $this->model_account_api->getApiIps($this->config->get('config_api_id'));
 
-		foreach ($results as $result) {
-			$ip_data[] = $result['ip'];
-		}
+//  	foreach ($results as $result) {
+//			$ip_data[] = $result['ip'];
+//		}
 
-		if (!in_array($this->request->server['REMOTE_ADDR'], $ip_data)) {
-			$json['error']['ip'] = sprintf($this->language->get('error_ip'), $this->request->server['REMOTE_ADDR']);
-		}
+//		if (!in_array($this->request->server['REMOTE_ADDR'], $ip_data)) {
+//			$json['error']['ip'] = sprintf($this->language->get('error_ip'), $this->request->server['REMOTE_ADDR']);
+//		}
 
 		if (!$json) {
 			// Login with API Key

@@ -23,6 +23,6 @@ define('DB_DRIVER', 'mysqli');
 define('DB_HOSTNAME', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'fenixes13');
-define('DB_DATABASE', 'opencart');
+define('DB_DATABASE', 'ocstore');
 define('DB_PORT', '3306');
 define('DB_PREFIX', 'oc_');
