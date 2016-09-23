@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>ocStore next default</name>
+  <code>next-default</code>
+  <version>1.0</version>
+  <author>AWARO</author>
+  <link>https://opencartforum.com/user/28051-awaro/</link>
+
+  <file path="admin/controller/design/layout.php">
+    <operation>
+      <search><![CDATA[$data['header'] = $this->load->controller('common/header');]]></search>
+      <add position="before"><![CDATA[
+      $data['elements_places'] = array(
+        'post_header' => 'Post Header',
+        'pre_footer' => 'Pre Footer'
+      );
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="admin/view/template/design/layout_form.tpl">
+      <operation>
+          <search><![CDATA[<td class="text-left"><select name="layout_module[<?php echo $module_row; ?>][position]" class="form-control">]]></search>
+          <add position="after"><![CDATA[
+      <?php foreach ($elements_places as $elements_places_key => $elements_places_value) { ?>
+        <option value="<?php echo $elements_places_key; ?>"<?php if ($layout_module['position'] == $elements_places_key) echo ' selected="selected"'; ?>><?php echo $elements_places_value; ?></option>
+      <?php } ?>
+      ]]></add>
+      </operation>
+    <operation>
+      <search><![CDATA[html += '    <option value="content_top"><?php echo $text_content_top; ?></option>';]]></search>
+      <add position="after"><![CDATA[
+      <?php foreach ($elements_places as $elements_places_key => $elements_places_value) { ?>
+        html += '<option value="<?php echo $elements_places_key; ?>"><?php echo $elements_places_value; ?></option>';
+      <?php } ?>
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/common/column_left.php">
+    <operation>
+      <search><![CDATA[public function index() {]]></search>
+      <add position="before"><![CDATA[
+        public function __construct($registry) {
+          parent::__construct($registry);
+
+          if (!$registry->get('elements_places')) {
+            $elements_positions = array(
+                'post_header' => 'Post Header',
+                'pre_footer' => 'Pre Footer'
+            );
+
+            $module_groups = array();
+
+            foreach ($elements_positions as $element_position_key => $element_position_value) {
+              if (!isset($module_groups[$element_position_key])) {
+                $module_groups[$element_position_key] = array();
+              }
+
+              $module_groups[$element_position_key] = $this->getModulesByPlace($element_position_key);
+            }
+
+            $registry->set('elements_places', $module_groups);
+          }
+        }
+
+        protected function getModulesByPlace($elements_positions) {
+          $this->load->model('design/layout');
+          $this->load->model('extension/module');
+          
+          if (isset($this->request->get['route'])) {
+            $route = (string)$this->request->get['route'];
+          } else {
+            $route = 'common/home';
+          }
+
+          $layout_id = 0;
+
+          if ($route == 'product/category' && isset($this->request->get['path'])) {
+            $this->load->model('catalog/category');
+            
+            $path = explode('_', (string)$this->request->get['path']);
+
+            $layout_id = $this->model_catalog_category->getCategoryLayoutId(end($path));
+          }
+
+          if ($route == 'product/product' && isset($this->request->get['product_id'])) {
+            $this->load->model('catalog/product');
+            
+            $layout_id = $this->model_catalog_product->getProductLayoutId($this->request->get['product_id']);
+          }
+
+          if ($route == 'information/information' && isset($this->request->get['information_id'])) {
+            $this->load->model('catalog/information');
+            
+            $layout_id = $this->model_catalog_information->getInformationLayoutId($this->request->get['information_id']);
+          }
+
+          if (!$layout_id) {
+            $layout_id = $this->model_design_layout->getLayout($route);
+          }
+
+          if (!$layout_id) {
+            $layout_id = $this->config->get('config_layout_id');
+          }
+          
+          $module_data = array();   
+          
+          $modules = $this->model_design_layout->getLayoutModules($layout_id, $elements_positions);
+
+          foreach ($modules as $module) {
+            $part = explode('.', $module['code']);
+            
+            if (isset($part[0]) && $this->config->get($part[0] . '_status')) {
+              $module_data[] = $this->load->controller('module/' . $part[0]);
+            }
+            
+            if (isset($part[1])) {
+              $setting_info = $this->model_extension_module->getModule($part[1]);
+              
+              if ($setting_info && $setting_info['status']) {
+                $module_data[] = $this->load->controller('module/' . $part[0], $setting_info);
+              }
+            }
+          }
+
+          return $module_data;
+        }        
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/common/header.php">
+    <operation>
+      <search><![CDATA[$data['telephone'] = $this->config->get('config_telephone');]]></search>
+      <add position="after"><![CDATA[
+		$data['open'] = $this->config->get('config_open');
+		$data['comment'] = $this->config->get('config_comment');
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/language/english/common/footer.php">
+    <operation>
+      <search><![CDATA[$_['text_information']  = 'Information';]]></search>
+      <add position="after"><![CDATA[
+			$_['text_telephone']  = 'Telephone:';
+			$_['text_address']  = 'Address:';
+			$_['text_open']  = 'Opening Times:';
+			$_['text_email']  = 'Email:';
+			$_['text_search']  = 'Search';
+			$_['text_compare']  = 'Compare';
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/language/russian/common/footer.php">
+    <operation>
+      <search><![CDATA[$_['text_information']  = 'Информация';]]></search>
+      <add position="after"><![CDATA[
+			$_['text_telephone']  = 'Телефон:';
+			$_['text_address']  = 'Адрес:';
+			$_['text_open']  = 'Время работы:';
+			$_['text_email']  = 'Email:';
+			$_['text_search']  = 'Поиск';
+			$_['text_compare']  = 'Сравнение товаров';
+      ]]></add>
+    </operation>
+  </file>
+  
+   <file path="catalog/controller/common/footer.php">
+    <operation>
+      <search><![CDATA[$data['scripts'] = $this->document->getScripts('footer');]]></search>
+      <add position="after"><![CDATA[
+		$data['meta_title'] = $this->config->get('config_meta_title');
+	    $data['meta_description'] = $this->config->get('config_meta_description');
+		$data['meta_title'] = $this->config->get('config_meta_title');
+		$data['telephone'] = $this->config->get('config_telephone');
+		$data['address'] = $this->config->get('config_address');
+		$data['open'] = $this->config->get('config_open');
+		$data['owner'] = $this->config->get('config_owner');
+		$data['email'] = $this->config->get('config_email');
+		$data['search'] = $this->config->get('config_search');
+		$data['compare'] = $this->config->get('config_compare');
+		
+		$data['text_email'] = $this->language->get('text_email');
+		$data['text_address'] = $this->language->get('text_address');
+		$data['text_telephone'] = $this->language->get('text_telephone');
+		$data['text_open'] = $this->language->get('text_open');
+		$data['text_search'] = $this->language->get('text_search');
+		$data['text_compare'] = $this->language->get('text_compare');
+		]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$data['contact'] = $this->url->link('information/contact');]]></search>
+      <add position="after"><![CDATA[
+			$data['search'] = $this->url->link('product/search');
+			$data['compare'] = $this->url->link('product/compare');
+      ]]></add>
+    </operation>
+  </file>
+  
+  <file path="catalog/language/english/error/not_found.php">
+     <operation>
+      <search><![CDATA[$_['heading_title'] = 'The page you requested cannot be found!';]]></search>
+      <add position="replace"><![CDATA[
+			$_['heading_title']    = '404';
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$_['text_error']    = 'The page you requested cannot be found.';]]></search>
+      <add position="replace"><![CDATA[
+			$_['text_error']    = 'Welcome to a 404 page!<br>
+									Perhaps the page You requested was moved or deleted.<br>
+									Please find below the information You use the navigation or search form.';
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/language/russian/error/not_found.php">
+      <operation>
+      <search><![CDATA[$_['heading_title'] = 'Запрашиваемая страница не найдена!';]]></search>
+      <add position="replace"><![CDATA[
+			$_['heading_title']    = '404';
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$_['text_error']    = 'Запрашиваемая страница не найдена!';]]></search>
+      <add position="replace"><![CDATA[
+			$_['text_error']    = 'Добро пожаловать на страницу 404!<br>
+									Возможно, запрашиваемая Вами страница была перенесена или удалена.<br>
+									Пожалуйста, воспользуйтесь навигацией или формой поиска, чтобы найти интересующую Вас информацию.';
+      ]]></add>
+    </operation>
+  </file>
+</modification>

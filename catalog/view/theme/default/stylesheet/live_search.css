@@ -52,7 +52,6 @@
 	padding:0px;
 }
 #live-search ul li .product-name{
-	font-weight: bold;
 	float: left;
 	width:60%;
 }
@@ -62,7 +61,7 @@
 	font-weight: bold;
 	float:right;
 	margin-top:10px;
-	width:15%;
+	width:18%;
 }
 #live-search ul li .product-price .price{
 	color: #333333;

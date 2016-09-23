@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-  <div class="panel-heading"><?php echo $heading_title; ?></div>
+  <div class="panel-heading">Фильтр</div>
   <div class="list-group">
     <?php foreach ($filter_groups as $filter_group) { ?>
     <a class="list-group-item"><?php echo $filter_group['name']; ?></a>
@@ -22,7 +22,7 @@
     <?php } ?>
   </div>
   <div class="panel-footer text-right">
-    <button type="button" id="button-filter" class="btn btn-primary"><?php echo $button_filter; ?></button>
+    <button type="button" id="button-filter" class="btn btn-primary">Отфильтровать</button>
   </div>
 </div>
 <script type="text/javascript"><!--

@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-  <div class="panel-heading"><?php echo $heading_title; ?></div>
+  <div class="panel-heading">Фильтр</div>
   <div class="list-group">
     <?php foreach ($filter_groups as $filter_group) { ?>
     <a class="list-group-item"><?php echo $filter_group['name']; ?></a>
@@ -28,6 +28,11 @@
 <script type="text/javascript"><!--
 
 $('#select_filter-group2').on('change', function() {
+
+  if ($('#select_filter-group2').val() == 0) {
+    $("#select_filter-group1").find("option:contains('R')").removeClass("hidden");
+    $("#select_filter-group1").find("option:contains('-')").removeClass("hidden");
+  }
     
   if ($('#select_filter-group2').val() == 55) {
     $("#select_filter-group1").find("option:contains('R')").addClass("hidden");
